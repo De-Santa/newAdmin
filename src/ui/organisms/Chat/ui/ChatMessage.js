@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import * as T from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
@@ -32,7 +32,9 @@ const propTypes = {
 };
 
 const ChatMessage = ({ classes, firstUserMessage, text, userDocPath }) => {
-  const [authorFetchStatus, author] = useFirebaseDoc(userDocPath);
+  const [, fetchAuthor, author] = useFirebaseDoc(userDocPath);
+
+  useEffect(() => { fetchAuthor(); }, [fetchAuthor]);
 
   return (
     <div className={classes.messageLayout}>

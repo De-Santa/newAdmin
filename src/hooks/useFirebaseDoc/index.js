@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from 'react';
+import { useCallback, useEffect, useReducer, useRef } from 'react';
 import { db } from 'src/firebase.db';
 import {
   FETCH, START, SUCCESS, FAIL, PRISTINE, PENDING, COMPLETE, ERROR
@@ -27,26 +27,28 @@ const reducer = (state, { type, payload }) => {
 export const useFirebaseDoc = (path) => {
   const [{ fetchStatus, payload }, dispatch] = useReducer(reducer, initialState);
 
-  useEffect(
+  const isCanceled = useRef(false);
+
+  useEffect(() => {
+    return () => { isCanceled.current = true; };
+  }, []);
+
+  const fetchDoc = useCallback(
     () => {
-      let canceled = false;
       dispatch({ type: FETCH + DOC + START });
-      db.doc(path).get()
+      return db.doc(path).get()
         .then(doc => {
-          !canceled && dispatch({
+          !isCanceled.current && (dispatch({
             type: FETCH + DOC + SUCCESS,
             payload: { ...doc.data(), id: doc.id }
-          });
+          }));
         })
         .catch(() => {
-          dispatch({ type: FETCH + DOC + FAIL });
+          !isCanceled.current && dispatch({ type: FETCH + DOC + FAIL });
         });
-      return () => {
-        canceled = true;
-      };
     },
     [path]
   );
 
-  return [fetchStatus, payload];
+  return [fetchStatus, fetchDoc, payload];
 };

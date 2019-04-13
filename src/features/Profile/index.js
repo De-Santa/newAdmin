@@ -1,11 +1,11 @@
-import React, { Fragment, useContext } from 'react';
-import * as T from 'prop-types';
+import React, { Fragment, useContext, useEffect } from 'react';
+// import * as T from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { AuthContext } from 'context';
 import { UserCard } from 'molecules';
 import { UserForm } from 'organisms';
 import { useFirebaseDoc } from 'hooks';
-import { PENDING, COMPLETE, ERROR } from 'constants/fetchStatus';
+import { PENDING, COMPLETE } from 'constants/fetchStatus';
 
 const styles = () => ({
   form: {
@@ -15,14 +15,14 @@ const styles = () => ({
 });
 
 const propTypes = {
-  classes: T.object.isRequired
+  // classes: T.object.isRequired
 };
 
-const Profile = ({ classes }) => {
+const Profile = () => {
   const [{ userData }] = useContext(AuthContext);
-  const [userFetchStatus, user] = useFirebaseDoc(`/users/${userData.uid}`);
+  const [userFetchStatus, fetchUser, user] = useFirebaseDoc(`/users/${userData.uid}`);
 
-  console.log('user', user);
+  useEffect(() => { fetchUser(); }, [fetchUser]);
 
   return (
     <Fragment>
@@ -30,7 +30,10 @@ const Profile = ({ classes }) => {
       {userFetchStatus === COMPLETE && (
         <Fragment>
           <UserCard userData={user} />
-          <UserForm userData={user} />
+          <UserForm
+            onSubmitComplete={() => { fetchUser(); }}
+            userData={user}
+          />
         </Fragment>
       )}
     </Fragment>

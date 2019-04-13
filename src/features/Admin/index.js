@@ -28,6 +28,7 @@ const Admin = ({ classes }) => {
           <TableCell>Пол</TableCell>
           <TableCell>Возраст</TableCell>
           <TableCell>Страна</TableCell>
+          <TableCell>Валюта</TableCell>
           <TableCell>Email</TableCell>
           <TableCell>Увлечения</TableCell>
           <TableCell>Аватар</TableCell>
@@ -41,6 +42,7 @@ const Admin = ({ classes }) => {
             <TableCell>{user.sex}</TableCell>
             <TableCell>{user.age}</TableCell>
             <TableCell>{user.country}</TableCell>
+            <TableCell>{user.currency}</TableCell>
             <TableCell>{user.email}</TableCell>
             <TableCell>{user.hobbies}</TableCell>
             <TableCell>
