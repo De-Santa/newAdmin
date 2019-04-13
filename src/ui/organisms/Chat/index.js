@@ -80,7 +80,6 @@ const Chat = ({ classes }) => {
           <Input
             id="userMessage"
             name="userMessage"
-            autoFocus
             autoComplete="text"
           />
         </FormControl>

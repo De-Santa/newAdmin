@@ -42,18 +42,24 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     return firebase.auth().onAuthStateChanged((firebaseUser) => {
       if (firebaseUser) {
-        const user = {
-          displayName: firebaseUser.displayName,
-          email: firebaseUser.email,
-          emailVerified: firebaseUser.emailVerified,
-          photoURL: firebaseUser.photoURL,
-          uid: firebaseUser.uid
-        };
-        dispatch({ type: AUTH_IN, payload: user });
+        dispatch({
+          type: AUTH_IN,
+          payload: {
+            displayName: firebaseUser.displayName,
+            photoURL: firebaseUser.photoURL,
+            uid: firebaseUser.uid
+          }
+        });
         /** save user to database on login success */
         db.collection('users')
-          .doc(user.uid)
-          .set(user, { merge: true });
+          .doc(firebaseUser.uid)
+          .set({
+            displayName: firebaseUser.displayName,
+            email: firebaseUser.email,
+            emailVerified: firebaseUser.emailVerified,
+            photoURL: firebaseUser.photoURL,
+            uid: firebaseUser.uid
+          }, { merge: true });
       } else {
         dispatch({ type: AUTH_OUT });
       }

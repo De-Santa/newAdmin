@@ -25,7 +25,11 @@ const Admin = ({ classes }) => {
         <TableRow>
           <TableCell>Имя пользователя</TableCell>
           <TableCell>Идентификатор</TableCell>
+          <TableCell>Пол</TableCell>
+          <TableCell>Возраст</TableCell>
+          <TableCell>Страна</TableCell>
           <TableCell>Email</TableCell>
+          <TableCell>Увлечения</TableCell>
           <TableCell>Аватар</TableCell>
         </TableRow>
       </TableHead>
@@ -34,7 +38,11 @@ const Admin = ({ classes }) => {
           <TableRow key={user.id}>
             <TableCell>{user.displayName}</TableCell>
             <TableCell>{user.id}</TableCell>
+            <TableCell>{user.sex}</TableCell>
+            <TableCell>{user.age}</TableCell>
+            <TableCell>{user.country}</TableCell>
             <TableCell>{user.email}</TableCell>
+            <TableCell>{user.hobbies}</TableCell>
             <TableCell>
               <Avatar alt={user.displayName} src={user.photoURL} />
             </TableCell>

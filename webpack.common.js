@@ -53,7 +53,7 @@ module.exports = {
     extensions: ['.js'],
     alias: {
       atoms: path.resolve(__dirname, 'src/ui/atoms'),
-      // constants: path.resolve(__dirname, 'src/constants'),
+      constants: path.resolve(__dirname, 'src/constants'),
       context: path.resolve(__dirname, 'src/context'),
       features: path.resolve(__dirname, 'src/features'),
       hooks: path.resolve(__dirname, 'src/hooks'),

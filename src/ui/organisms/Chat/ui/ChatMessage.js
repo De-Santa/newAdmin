@@ -32,7 +32,7 @@ const propTypes = {
 };
 
 const ChatMessage = ({ classes, firstUserMessage, text, userDocPath }) => {
-  const author = useFirebaseDoc(userDocPath);
+  const [authorFetchStatus, author] = useFirebaseDoc(userDocPath);
 
   return (
     <div className={classes.messageLayout}>
