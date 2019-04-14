@@ -3,6 +3,7 @@ import * as T from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import { AuthContext } from 'context';
 
 const propTypes = {
@@ -13,11 +14,17 @@ const propTypes = {
 const styles = () => ({
   wrapper: {
     height: '100vh',
+  },
+  progress: {
+    position: 'absolute',
+    top: '0',
+    left: '0',
+    width: '100%'
   }
 });
 
 const AuthLayout = ({ classes, children }) => {
-  const [{ authorized }] = useContext(AuthContext);
+  const [{ authorized, authInProgress }] = useContext(AuthContext);
   return (
     authorized
       ? <Redirect to="/app/profile" />
@@ -29,6 +36,11 @@ const AuthLayout = ({ classes, children }) => {
           direction="column"
           justify="center"
         >
+          {authInProgress && (
+            <div className={classes.progress}>
+              <LinearProgress />
+            </div>
+          )}
           {authorized
             ? <Redirect to="/app/profile" />
             : children

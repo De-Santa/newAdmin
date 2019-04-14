@@ -43,6 +43,7 @@ const Header = ({ classes, location }) => {
     >
       <Tabs
         component="nav"
+        indicatorColor="primary"
         value={location.pathname}
       >
         { MENU_LINKS.map(({ path, label }) => (

@@ -1,5 +1,6 @@
 import React, { Fragment, useContext, useEffect } from 'react';
 import * as T from 'prop-types';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { AuthContext } from 'context';
 import { UserCard } from 'molecules';
@@ -12,6 +13,12 @@ const styles = () => ({
     display: 'flex',
     flexDirection: 'column',
     height: 'inherit'
+  },
+  progress: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    margin: '-20px 0 0 -20px'
   }
 });
 
@@ -27,7 +34,7 @@ const Profile = ({ classes }) => {
 
   return (
     <Fragment>
-      {userFetchStatus === PENDING && (<Fragment>Загрузка...</Fragment>)}
+      {userFetchStatus === PENDING && (<CircularProgress className={classes.progress} />)}
       {userFetchStatus === COMPLETE && (
         <div className={classes.profileLayout}>
           <UserCard

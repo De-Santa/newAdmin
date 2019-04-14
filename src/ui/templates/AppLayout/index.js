@@ -28,7 +28,8 @@ const styles = () => ({
     gridArea: 'hdr'
   },
   contentArea: {
-    gridArea: 'cnt'
+    gridArea: 'cnt',
+    position: 'relative'
   },
   chatArea: {
     gridArea: 'cht'

@@ -12,6 +12,7 @@ const styles = () => ({
   form: {
     display: 'flex',
     flexDirection: 'column',
+    paddingBottom: '6px'
   },
   fieldsWrapper: {
     marginBottom: '30px'
@@ -106,6 +107,7 @@ const UserForm = ({ classes, onSubmitComplete, userData, ...props }) => {
                 value={values.country}
               />
               <TextField
+                disabled={isSubmitting}
                 id="currency"
                 name="currency"
                 select
@@ -155,6 +157,7 @@ const UserForm = ({ classes, onSubmitComplete, userData, ...props }) => {
                 value={values.hobbies}
               />
               <TextField
+                disabled={isSubmitting}
                 id="sex"
                 name="sex"
                 select
@@ -181,7 +184,6 @@ const UserForm = ({ classes, onSubmitComplete, userData, ...props }) => {
               disabled={isSubmitting}
               type="submit"
               fullWidth
-              variant="contained"
               color="primary"
               className={classes.submit}
             >
