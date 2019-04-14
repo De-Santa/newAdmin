@@ -43,28 +43,26 @@ const UserCard = ({ classes, fetchUser, userData }) => {
   const inputUploadRef = useRef();
 
   const handleFileUpload = useCallback(
-    (event, file) => {
+    (file) => {
       if (file) {
         const storageRef = storage.ref();
         const uploadTask = storageRef.child(file.name);
 
         uploadTask
           .put(file)
-          .on('state_changed', snapshot => {
-            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          },
-          error => {},
-          () => {
-            uploadTask.getDownloadURL().then((downloadURL) => {
-              db.collection('users').doc(uid).update({ photoURL: downloadURL })
-                .then(() => {
-                  fetchUser();
-                });
+          .on('state_changed', () => {},
+            error => { throw new Error(error.message); },
+            () => {
+              uploadTask.getDownloadURL().then((downloadURL) => {
+                db.collection('users').doc(uid).update({ photoURL: downloadURL })
+                  .then(() => {
+                    fetchUser();
+                  });
+              });
             });
-          });
       }
     },
-    [photoURL, uid]
+    [fetchUser, uid]
   );
 
   return (
@@ -91,7 +89,7 @@ const UserCard = ({ classes, fetchUser, userData }) => {
         ref={inputUploadRef}
         type="file"
         accept=".png,.jpg,.webp"
-        onChange={() => handleFileUpload(event, inputUploadRef.current.files[0])}
+        onChange={() => handleFileUpload(inputUploadRef.current.files[0])}
       />
     </Card>
   );

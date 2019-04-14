@@ -59,6 +59,8 @@ const LogIn = ({ classes }) => {
           className={classes.form}
           onSubmit={(e) => {
             e.preventDefault();
+            const [email, password] = [...e.target.elements].map(e => e.value);
+            logIn('email', { email, password });
           }}
         >
           <FormControl

@@ -57,7 +57,7 @@ const AuthProvider = ({ children }) => {
             return;
           }
           /** if user not exist save him to database */
-          const { displayName, email, photoURL, uid } = firebaseUser;
+          const { displayName = '', email = '', photoURL = '', uid } = firebaseUser || {};
 
           userDocRef.set({ displayName, email, photoURL, uid, _version: 0 })
             .then(() => {
@@ -76,7 +76,8 @@ const AuthProvider = ({ children }) => {
   );
 
   const logIn = useCallback(
-    async (authProvider) => {
+    async (authProvider, credentials = {}) => {
+      const { email, password } = credentials;
       dispatch({ type: AUTH_START });
       let provider;
 
@@ -89,8 +90,25 @@ const AuthProvider = ({ children }) => {
             dispatch({ type: AUTH_ERROR, payload: error.message });
           }
           break;
+        case 'email':
+          provider = new firebase.auth.EmailAuthProvider();
+          try {
+            await firebase.auth().signInWithEmailAndPassword(email, password);
+          } catch (error) {
+            switch (error.code) {
+              case ('auth/user-not-found'):
+                try {
+                  await firebase.auth().createUserWithEmailAndPassword(email, password);
+                } catch (createError) {
+                  dispatch({ type: AUTH_ERROR, payload: createError.message });
+                }
+                break;
+              default: dispatch({ type: AUTH_ERROR, payload: error.message });
+            }
+          }
+          break;
         default: throw new Error(
-          'logIn should use one of auth providers as argument: "google"'
+          'Unknown auth provider'
         );
       }
     },
