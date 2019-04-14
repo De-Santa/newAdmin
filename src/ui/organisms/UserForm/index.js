@@ -44,7 +44,7 @@ const UserForm = ({ classes, onSubmitComplete, userData }) => {
         age, country, currency, displayName, email, hobbies, sex
       }}
       onSubmit={(values, { setSubmitting }) => {
-        db.collection('users').doc(userData.uid).set(values, { merge: true })
+        db.collection('users').doc(userData.uid).update(values)
           .then(() => {
             setSubmitting(false);
             onSubmitComplete();

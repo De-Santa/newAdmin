@@ -28,7 +28,6 @@ const propTypes = {
   userData: T.shape({
     displayName: T.string.isRequired,
     email: T.string.isRequired,
-    emailVerified: T.bool.isRequired,
     photoURL: T.string.isRequired
   }).isRequired
 };

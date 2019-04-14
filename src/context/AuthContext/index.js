@@ -41,45 +41,31 @@ const AuthProvider = ({ children }) => {
   /** firebase listener on login/logout */
   useEffect(() => {
     return firebase.auth().onAuthStateChanged((firebaseUser) => {
+      /** if no user info came from observer it means logout */
       if (!firebaseUser) {
         dispatch({ type: AUTH_OUT });
         return;
       }
-
-      /** if user not exist save him to database on login success */
+      /** get ref on firebase doc with user */
       const userDocRef = db.collection('users').doc(firebaseUser.uid);
+
       userDocRef.get()
         .then(doc => {
-          if (!doc.exists) {
-            userDocRef.set(
-              {
-                displayName: firebaseUser.displayName,
-                email: firebaseUser.email,
-                emailVerified: firebaseUser.emailVerified,
-                photoURL: firebaseUser.photoURL,
-                uid: firebaseUser.uid
-              },
-              { merge: true }
-            ).then(() => {
-              dispatch({
-                type: AUTH_IN,
-                payload: {
-                  displayName: firebaseUser.displayName,
-                  photoURL: firebaseUser.photoURL,
-                  uid: firebaseUser.uid
-                }
+          /** if user exists get his data and dispatch login success */
+          if (doc.exists) {
+            dispatch({ type: AUTH_IN, payload: { ...doc.data() } });
+            return;
+          }
+          /** if user not exist save him to database */
+          const { displayName, email, photoURL, uid } = firebaseUser;
+
+          userDocRef.set({ displayName, email, photoURL, uid })
+            .then(() => {
+              /** after creation complete get new user data and dispatch login success */
+              userDocRef.get().then((createdDoc) => {
+                dispatch({ type: AUTH_IN, payload: { ...createdDoc.data() } });
               });
             });
-          } else {
-            dispatch({
-              type: AUTH_IN,
-              payload: {
-                displayName: firebaseUser.displayName,
-                photoURL: firebaseUser.photoURL,
-                uid: firebaseUser.uid
-              }
-            });
-          }
         })
         .catch((error) => {
           dispatch({ type: AUTH_ERROR, payload: error.message });
@@ -112,9 +98,7 @@ const AuthProvider = ({ children }) => {
   );
 
   const logOut = useCallback(
-    () => {
-      firebase.auth().signOut();
-    },
+    () => { firebase.auth().signOut(); },
     []
   );
 
