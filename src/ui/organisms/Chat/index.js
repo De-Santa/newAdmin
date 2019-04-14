@@ -36,8 +36,8 @@ const propTypes = {
 };
 
 const Chat = ({ classes }) => {
-  const messageHistory = useFirebaseCollection('chat/messages/history', 'createdAt');
   const [{ userData }] = useContext(AuthContext);
+  const messageHistory = useFirebaseCollection('chat/messages/history', 'createdAt');
 
   return (
     <div className={classes.layout}>

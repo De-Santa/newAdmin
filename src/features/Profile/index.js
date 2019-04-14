@@ -29,7 +29,10 @@ const Profile = () => {
       {userFetchStatus === PENDING && (<Fragment>Загрузка...</Fragment>)}
       {userFetchStatus === COMPLETE && (
         <Fragment>
-          <UserCard userData={user} />
+          <UserCard
+            userData={user}
+            fetchUser={fetchUser}
+          />
           <UserForm
             onSubmitComplete={() => { fetchUser(); }}
             userData={user}
