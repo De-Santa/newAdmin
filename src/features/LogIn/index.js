@@ -2,10 +2,8 @@ import React, { useContext } from 'react';
 import * as T from 'prop-types';
 import AccountIcon from '@material-ui/icons/AccountCircle';
 import Button from '@material-ui/core/Button';
-import FormControl from '@material-ui/core/FormControl';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
 import Paper from '@material-ui/core/Paper';
+import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { AuthContext } from 'context';
@@ -59,26 +57,30 @@ const LogIn = ({ classes }) => {
           className={classes.form}
           onSubmit={(e) => {
             e.preventDefault();
-            const [email, password] = [...e.target.elements].map(e => e.value);
-            logIn('email', { email, password });
+            logIn('email', {
+              email: e.target.email.value,
+              password: e.target.password.value
+            });
           }}
         >
-          <FormControl
+          <TextField
             disabled={authInProgress}
-            margin="normal"
             fullWidth
-          >
-            <InputLabel htmlFor="email">Логин</InputLabel>
-            <Input id="email" name="email" autoComplete="email" autoFocus />
-          </FormControl>
-          <FormControl
+            id="email"
+            label="Логин"
+            margin="normal"
+            name="email"
+          />
+          <TextField
+            autoComplete="current-password"
             disabled={authInProgress}
-            margin="normal"
             fullWidth
-          >
-            <InputLabel htmlFor="password">Пароль</InputLabel>
-            <Input name="password" type="password" id="password" autoComplete="current-password" />
-          </FormControl>
+            id="password"
+            label="Пароль"
+            margin="normal"
+            name="password"
+            type="password"
+          />
           <Button
             disabled={authInProgress}
             type="submit"
