@@ -16,7 +16,7 @@ const styles = () => ({
     height: '100vh',
     padding: '15px 30px 30px',
     display: 'grid',
-    gridTemplateColumns: 'minmax(0, 1fr) minmax(320px, 600px)',
+    gridTemplateColumns: 'minmax(0, 1fr) minmax(320px, 500px)',
     gridTemplateRows: 'auto minmax(0, 1fr)',
     gridTemplateAreas: `
       'hdr hdr'
