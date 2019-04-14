@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useEffect } from 'react';
+import React, { useContext, useRef, useLayoutEffect } from 'react';
 import * as T from 'prop-types';
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
@@ -40,7 +40,7 @@ const Chat = ({ classes }) => {
   const messagesWindowRef = useRef(null);
   const messageHistory = useFirebaseCollection('chat/messages/history', 'createdAt');
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const messagesWindow = messagesWindowRef.current;
     messagesWindow.scrollTop = messagesWindow.scrollHeight;
   });

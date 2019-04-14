@@ -63,7 +63,7 @@ const AuthProvider = ({ children }) => {
           userDocRef.set({
             displayName: displayName || email,
             email,
-            photoURL: photoURL || 'https://opt-1031816.ssl.1c-bitrix-cdn.ru/upload/resize_cache/iblock/8b8/750_400_1/pochemu_kotenok_lizhet_volosy_i_zaryvaetsja_v_nih.jpg',
+            photoURL: photoURL || 'https://picsum.photos/200',
             uid,
             _version: 0
           })
