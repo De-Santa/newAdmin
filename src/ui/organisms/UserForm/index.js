@@ -5,7 +5,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Formik } from 'formik';
-import { db } from 'src/firebase.db';
+import { db, firebase } from 'src/firebase.db';
 import { currencies, sexTypes } from 'constants/common';
 
 const styles = () => ({
@@ -41,7 +41,10 @@ const UserForm = ({ classes, onSubmitComplete, userData }) => {
         age, country, currency, displayName, email, hobbies, sex
       }}
       onSubmit={(values, { setSubmitting }) => {
-        db.collection('users').doc(userData.uid).update(values)
+        db.collection('users').doc(userData.uid).update({
+          ...values,
+          _version: firebase.firestore.FieldValue.increment(1)
+        })
           .then(() => {
             setSubmitting(false);
             onSubmitComplete();
@@ -74,9 +77,6 @@ const UserForm = ({ classes, onSubmitComplete, userData }) => {
               type="number"
               variant="outlined"
               value={values.age}
-              InputLabelProps={{
-                shrink: true,
-              }}
             />
             <TextField
               disabled={isSubmitting}
@@ -89,9 +89,6 @@ const UserForm = ({ classes, onSubmitComplete, userData }) => {
               onChange={handleChange}
               variant="outlined"
               value={values.displayName}
-              InputLabelProps={{
-                shrink: true,
-              }}
             />
             <TextField
               disabled={isSubmitting}
@@ -104,9 +101,6 @@ const UserForm = ({ classes, onSubmitComplete, userData }) => {
               onChange={handleChange}
               variant="outlined"
               value={values.country}
-              InputLabelProps={{
-                shrink: true,
-              }}
             />
             <TextField
               id="currency"
@@ -141,9 +135,6 @@ const UserForm = ({ classes, onSubmitComplete, userData }) => {
               onChange={handleChange}
               variant="outlined"
               value={values.email}
-              InputLabelProps={{
-                shrink: true,
-              }}
             />
             <TextField
               disabled={isSubmitting}
@@ -158,9 +149,6 @@ const UserForm = ({ classes, onSubmitComplete, userData }) => {
               onChange={handleChange}
               variant="outlined"
               value={values.hobbies}
-              InputLabelProps={{
-                shrink: true,
-              }}
             />
             <TextField
               id="sex"

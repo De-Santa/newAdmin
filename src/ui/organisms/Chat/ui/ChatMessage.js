@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as T from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import { useFirebaseDoc } from 'hooks';
+import { db } from 'src/firebase.db';
 
 const styles = () => ({
   messageLayout: {
@@ -28,13 +28,17 @@ const propTypes = {
   classes: T.object.isRequired,
   firstUserMessage: T.bool.isRequired,
   text: T.string.isRequired,
-  userDocPath: T.string.isRequired
+  userDocPath: T.string.isRequired,
 };
 
 const ChatMessage = ({ classes, firstUserMessage, text, userDocPath }) => {
-  const [, fetchAuthor, author] = useFirebaseDoc(userDocPath);
+  const [author, setAuthor] = useState({});
 
-  useEffect(() => { fetchAuthor(); }, [fetchAuthor]);
+  useEffect(() => {
+    return db.doc(userDocPath).onSnapshot((snapshot) => {
+      setAuthor(snapshot.data());
+    });
+  }, [setAuthor, userDocPath]);
 
   return (
     <div className={classes.messageLayout}>
