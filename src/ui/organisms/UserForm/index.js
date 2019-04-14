@@ -1,9 +1,6 @@
 import React from 'react';
 import * as T from 'prop-types';
 import Button from '@material-ui/core/Button';
-import FormControl from '@material-ui/core/FormControl';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -65,57 +62,61 @@ const UserForm = ({ classes, onSubmitComplete, userData }) => {
             className={classes.form}
             onSubmit={handleSubmit}
           >
-            <FormControl
+            <TextField
               disabled={isSubmitting}
-              margin="normal"
               fullWidth
-            >
-              <InputLabel htmlFor="age">Возраст</InputLabel>
-              <Input
-                id="age"
-                name="age"
-                type="number"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.age}
-              />
-            </FormControl>
-            <FormControl
+              id="age"
+              label="Возраст"
+              placeholder="Укажите возраст"
+              margin="normal"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              type="number"
+              variant="outlined"
+              value={values.age}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <TextField
               disabled={isSubmitting}
-              margin="normal"
               fullWidth
-            >
-              <InputLabel htmlFor="displayName">Имя</InputLabel>
-              <Input
-                id="displayName"
-                name="displayName"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.displayName}
-              />
-            </FormControl>
-            <FormControl
+              id="displayName"
+              label="Имя"
+              placeholder="Ваше имя"
+              margin="normal"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              variant="outlined"
+              value={values.displayName}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <TextField
               disabled={isSubmitting}
-              margin="normal"
               fullWidth
-            >
-              <InputLabel htmlFor="country">Страна</InputLabel>
-              <Input
-                name="country"
-                id="country"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.country}
-              />
-            </FormControl>
+              id="country"
+              label="Страна"
+              placeholder="Укажите страну проживания"
+              margin="normal"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              variant="outlined"
+              value={values.country}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
             <TextField
               id="currency"
               name="currency"
               select
               label="Валюта"
+              placeholder="Тип валюты"
               value={values.currency}
+              variant="outlined"
               onChange={handleChange}
-              helperText="Выберите тип валюты"
               margin="normal"
             >
               {currencies.map(option => (
@@ -128,43 +129,48 @@ const UserForm = ({ classes, onSubmitComplete, userData }) => {
                 </MenuItem>
               ))}
             </TextField>
-            <FormControl
+            <TextField
+              autoComplete="email"
               disabled={isSubmitting}
-              margin="normal"
               fullWidth
-            >
-              <InputLabel htmlFor="email">Email</InputLabel>
-              <Input
-                autoComplete="email"
-                name="email"
-                id="email"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.email}
-              />
-            </FormControl>
-            <FormControl
+              id="email"
+              label="Email"
+              placeholder="Укажите ваш Email"
+              margin="normal"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              variant="outlined"
+              value={values.email}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <TextField
               disabled={isSubmitting}
-              margin="normal"
               fullWidth
-            >
-              <InputLabel htmlFor="hobbies">Увлечения</InputLabel>
-              <Input
-                name="hobbies"
-                id="hobbies"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.hobbies}
-              />
-            </FormControl>
+              id="hobbies"
+              label="Увлечения"
+              margin="normal"
+              multiline
+              placeholder="Расскажите о ваших увлечениях"
+              rowsMax="4"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              variant="outlined"
+              value={values.hobbies}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
             <TextField
               id="sex"
               name="sex"
               select
               label="Пол"
+              placeholder="Ваш пол"
               value={values.sex}
+              variant="outlined"
               onChange={handleChange}
-              helperText="Выберите пол"
               margin="normal"
             >
               {sexTypes.map(option => (
@@ -176,6 +182,7 @@ const UserForm = ({ classes, onSubmitComplete, userData }) => {
                 </MenuItem>
               ))}
             </TextField>
+
             <Button
               disabled={isSubmitting}
               type="submit"
