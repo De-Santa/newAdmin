@@ -66,12 +66,11 @@ const Chat = ({ classes }) => {
         className={classes.sendMessage}
         onSubmit={(e) => {
           e.preventDefault();
-          db.collection('chat/messages/history')
-            .add({
-              text: e.target.elements[0].value,
-              createdAt: new Date(),
-              user: db.collection('users').doc(userData.uid)
-            });
+          db.collection('chat/messages/history').add({
+            text: e.target.elements[0].value,
+            createdAt: new Date(),
+            user: db.collection('users').doc(userData.uid)
+          });
           e.target.reset();
         }}
       >

@@ -59,7 +59,7 @@ const AuthProvider = ({ children }) => {
           /** if user not exist save him to database */
           const { displayName, email, photoURL, uid } = firebaseUser;
 
-          userDocRef.set({ displayName, email, photoURL, uid })
+          userDocRef.set({ displayName, email, photoURL, uid, _version: 0 })
             .then(() => {
               /** after creation complete get new user data and dispatch login success */
               userDocRef.get().then((createdDoc) => {
