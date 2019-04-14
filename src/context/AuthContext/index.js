@@ -53,13 +53,20 @@ const AuthProvider = ({ children }) => {
         .then(doc => {
           /** if user exists get his data and dispatch login success */
           if (doc.exists) {
-            dispatch({ type: AUTH_IN, payload: { ...doc.data() } });
+            const docData = { ...doc.data() };
+            dispatch({ type: AUTH_IN, payload: docData });
             return;
           }
           /** if user not exist save him to database */
-          const { displayName = '', email = '', photoURL = '', uid } = firebaseUser || {};
+          const { displayName, email, photoURL, uid } = firebaseUser;
 
-          userDocRef.set({ displayName, email, photoURL, uid, _version: 0 })
+          userDocRef.set({
+            displayName: displayName || email,
+            email,
+            photoURL: photoURL || 'https://opt-1031816.ssl.1c-bitrix-cdn.ru/upload/resize_cache/iblock/8b8/750_400_1/pochemu_kotenok_lizhet_volosy_i_zaryvaetsja_v_nih.jpg',
+            uid,
+            _version: 0
+          })
             .then(() => {
               /** after creation complete get new user data and dispatch login success */
               userDocRef.get().then((createdDoc) => {
@@ -79,8 +86,8 @@ const AuthProvider = ({ children }) => {
     async (authProvider, credentials = {}) => {
       const { email, password } = credentials;
       dispatch({ type: AUTH_START });
-      let provider;
 
+      let provider;
       switch (authProvider) {
         case 'google':
           provider = new firebase.auth.GoogleAuthProvider();
