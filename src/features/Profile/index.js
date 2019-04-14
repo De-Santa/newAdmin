@@ -1,5 +1,5 @@
 import React, { Fragment, useContext, useEffect } from 'react';
-// import * as T from 'prop-types';
+import * as T from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { AuthContext } from 'context';
 import { UserCard } from 'molecules';
@@ -8,17 +8,18 @@ import { useFirebaseDoc } from 'hooks';
 import { PENDING, COMPLETE } from 'constants/fetchStatus';
 
 const styles = () => ({
-  form: {
+  profileLayout: {
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    height: 'inherit'
   }
 });
 
 const propTypes = {
-  // classes: T.object.isRequired
+  classes: T.object.isRequired
 };
 
-const Profile = () => {
+const Profile = ({ classes }) => {
   const [{ userData }] = useContext(AuthContext);
   const [userFetchStatus, fetchUser, user] = useFirebaseDoc(`/users/${userData.uid}`);
 
@@ -28,16 +29,18 @@ const Profile = () => {
     <Fragment>
       {userFetchStatus === PENDING && (<Fragment>Загрузка...</Fragment>)}
       {userFetchStatus === COMPLETE && (
-        <Fragment>
+        <div className={classes.profileLayout}>
           <UserCard
-            userData={user}
+            style={{ flex: '0 0 auto' }}
             fetchUser={fetchUser}
+            userData={user}
           />
           <UserForm
             onSubmitComplete={() => { fetchUser(); }}
+            style={{ flex: '1 1 0' }}
             userData={user}
           />
-        </Fragment>
+        </div>
       )}
     </Fragment>
   );

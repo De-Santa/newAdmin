@@ -11,10 +11,13 @@ import { currencies, sexTypes } from 'constants/common';
 const styles = () => ({
   form: {
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+  },
+  fieldsWrapper: {
+    marginBottom: '30px'
   },
   submit: {
-    marginTop: '30px'
+    marginTop: 'auto'
   }
 });
 
@@ -24,7 +27,7 @@ const propTypes = {
   userData: T.object.isRequired
 };
 
-const UserForm = ({ classes, onSubmitComplete, userData }) => {
+const UserForm = ({ classes, onSubmitComplete, userData, ...props }) => {
   const {
     age = '',
     country = '',
@@ -41,14 +44,12 @@ const UserForm = ({ classes, onSubmitComplete, userData }) => {
         age, country, currency, displayName, email, hobbies, sex
       }}
       onSubmit={(values, { setSubmitting }) => {
-        db.collection('users').doc(userData.uid).update({
-          ...values,
-          _version: firebase.firestore.FieldValue.increment(1)
-        })
-          .then(() => {
-            setSubmitting(false);
-            onSubmitComplete();
-          });
+        db.collection('users').doc(userData.uid).update(
+          { ...values, _version: firebase.firestore.FieldValue.increment(1) }
+        ).then(() => {
+          setSubmitting(false);
+          onSubmitComplete();
+        });
       }}
     >
       {formikProps => {
@@ -64,112 +65,117 @@ const UserForm = ({ classes, onSubmitComplete, userData }) => {
           <form
             className={classes.form}
             onSubmit={handleSubmit}
+            {...props}
           >
-            <TextField
-              disabled={isSubmitting}
-              fullWidth
-              id="age"
-              label="Возраст"
-              placeholder="Укажите возраст"
-              margin="normal"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              type="number"
-              variant="outlined"
-              value={values.age}
-            />
-            <TextField
-              disabled={isSubmitting}
-              fullWidth
-              id="displayName"
-              label="Имя"
-              placeholder="Ваше имя"
-              margin="normal"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              variant="outlined"
-              value={values.displayName}
-            />
-            <TextField
-              disabled={isSubmitting}
-              fullWidth
-              id="country"
-              label="Страна"
-              placeholder="Укажите страну проживания"
-              margin="normal"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              variant="outlined"
-              value={values.country}
-            />
-            <TextField
-              id="currency"
-              name="currency"
-              select
-              label="Валюта"
-              placeholder="Тип валюты"
-              value={values.currency}
-              variant="outlined"
-              onChange={handleChange}
-              margin="normal"
-            >
-              {currencies.map(option => (
-                <MenuItem
-                  key={option.value}
-                  value={option.value}
-                  title={option.title}
-                >
-                  {option.label}
-                </MenuItem>
-              ))}
-            </TextField>
-            <TextField
-              autoComplete="email"
-              disabled={isSubmitting}
-              fullWidth
-              id="email"
-              label="Email"
-              placeholder="Укажите ваш Email"
-              margin="normal"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              variant="outlined"
-              value={values.email}
-            />
-            <TextField
-              disabled={isSubmitting}
-              fullWidth
-              id="hobbies"
-              label="Увлечения"
-              margin="normal"
-              multiline
-              placeholder="Расскажите о ваших увлечениях"
-              rowsMax="4"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              variant="outlined"
-              value={values.hobbies}
-            />
-            <TextField
-              id="sex"
-              name="sex"
-              select
-              label="Пол"
-              placeholder="Ваш пол"
-              value={values.sex}
-              variant="outlined"
-              onChange={handleChange}
-              margin="normal"
-            >
-              {sexTypes.map(option => (
-                <MenuItem
-                  key={option.value}
-                  value={option.value}
-                >
-                  {option.label}
-                </MenuItem>
-              ))}
-            </TextField>
+            <div className={classes.fieldsWrapper}>
+              <TextField
+                disabled={isSubmitting}
+                fullWidth
+                id="age"
+                label="Возраст"
+                placeholder="Укажите возраст"
+                margin="normal"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                type="number"
+                variant="outlined"
+                value={values.age}
+              />
+              <TextField
+                disabled={isSubmitting}
+                fullWidth
+                id="displayName"
+                label="Имя"
+                placeholder="Ваше имя"
+                margin="normal"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                variant="outlined"
+                value={values.displayName}
+              />
+              <TextField
+                disabled={isSubmitting}
+                fullWidth
+                id="country"
+                label="Страна"
+                placeholder="Укажите страну проживания"
+                margin="normal"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                variant="outlined"
+                value={values.country}
+              />
+              <TextField
+                id="currency"
+                name="currency"
+                select
+                fullWidth
+                label="Валюта"
+                placeholder="Тип валюты"
+                value={values.currency}
+                variant="outlined"
+                onChange={handleChange}
+                margin="normal"
+              >
+                {currencies.map(option => (
+                  <MenuItem
+                    key={option.value}
+                    value={option.value}
+                    title={option.title}
+                  >
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+              <TextField
+                autoComplete="email"
+                disabled={isSubmitting}
+                fullWidth
+                id="email"
+                label="Email"
+                placeholder="Укажите ваш Email"
+                margin="normal"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                variant="outlined"
+                value={values.email}
+              />
+              <TextField
+                disabled={isSubmitting}
+                fullWidth
+                id="hobbies"
+                label="Увлечения"
+                margin="normal"
+                multiline
+                placeholder="Расскажите о ваших увлечениях"
+                rowsMax="4"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                variant="outlined"
+                value={values.hobbies}
+              />
+              <TextField
+                id="sex"
+                name="sex"
+                select
+                fullWidth
+                label="Пол"
+                placeholder="Ваш пол"
+                value={values.sex}
+                variant="outlined"
+                onChange={handleChange}
+                margin="normal"
+              >
+                {sexTypes.map(option => (
+                  <MenuItem
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </div>
 
             <Button
               disabled={isSubmitting}

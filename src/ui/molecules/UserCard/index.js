@@ -21,6 +21,7 @@ const styles = () => ({
   },
   avatar: {
     width: 100,
+    cursor: 'pointer'
   },
   hidden: {
     display: 'none'
@@ -38,7 +39,7 @@ const propTypes = {
   }).isRequired
 };
 
-const UserCard = ({ classes, fetchUser, userData }) => {
+const UserCard = ({ classes, fetchUser, userData, ...props }) => {
   const { displayName, email, photoURL, uid } = userData;
   const inputUploadRef = useRef();
 
@@ -66,7 +67,7 @@ const UserCard = ({ classes, fetchUser, userData }) => {
   );
 
   return (
-    <Card className={classes.card}>
+    <Card className={classes.card} {...props}>
       <div className={classes.details}>
         <CardContent className={classes.content}>
           <Typography component="h5" variant="h5">
@@ -82,7 +83,7 @@ const UserCard = ({ classes, fetchUser, userData }) => {
         onClick={() => inputUploadRef.current.click()}
         className={classes.avatar}
         image={photoURL}
-        title={displayName}
+        title="Загрузить новый аватар"
       />
       <input
         className={classes.hidden}
