@@ -11,21 +11,33 @@ const propTypes = {
   children: T.node.isRequired
 };
 
-const styles = () => ({
+const styles = (theme) => ({
   layoutGrid: {
-    height: '100vh',
+    minHeight: '100vh',
     padding: '15px 30px 30px',
     display: 'grid',
-    gridTemplateColumns: 'minmax(0, 1fr) minmax(320px, 500px)',
+    gridTemplateColumns: 'minmax(320px, 1fr) minmax(320px, 500px)',
     gridTemplateRows: 'auto minmax(0, 1fr)',
     gridTemplateAreas: `
       'hdr hdr'
       'cnt cht'
     `,
-    gridGap: '12px'
+    gridGap: '12px',
+    [theme.breakpoints.down('sm')]: {
+      gridTemplateColumns: 'minmax(320px, 1fr)',
+      gridTemplateRows: 'auto minmax(300px, 1fr) 250px',
+      gridTemplateAreas: `
+      'hdr'
+      'cht'
+      'cnt'
+    `
+    }
   },
   headerArea: {
-    gridArea: 'hdr'
+    gridArea: 'hdr',
+    [theme.breakpoints.down('sm')]: {
+      // alignSelf: 'start'
+    }
   },
   contentArea: {
     gridArea: 'cnt',
@@ -36,10 +48,8 @@ const styles = () => ({
   },
   paper: {
     height: '100%',
-    overflowX: 'auto',
-    padding: '6px 9px',
-    color: '#333333',
-    // whiteSpace: 'nowrap'
+    overflow: 'auto',
+    padding: '15px 30px'
   }
 });
 

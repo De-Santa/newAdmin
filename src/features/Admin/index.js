@@ -1,17 +1,28 @@
 import React from 'react';
-// import * as T from 'prop-types';
+import * as T from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import { withStyles } from '@material-ui/core/styles';
 import { useFirebaseCollection } from 'hooks';
 
-const Admin = () => {
+const propTypes = {
+  classes: T.object.isRequired,
+};
+
+const styles = () => ({
+  table: {
+    display: 'block'
+  }
+});
+
+const Admin = ({ classes }) => {
   const users = useFirebaseCollection('users');
   return (
-    <Table>
+    <Table className={classes.table}>
       <TableHead>
         <TableRow>
           <TableCell>Аватар</TableCell>
@@ -46,6 +57,6 @@ const Admin = () => {
   );
 };
 
-// Admin.propTypes = propTypes;
+Admin.propTypes = propTypes;
 
-export default Admin;
+export default withStyles(styles)(Admin);

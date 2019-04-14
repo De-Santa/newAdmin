@@ -38,13 +38,16 @@ const Profile = ({ classes }) => {
       {userFetchStatus === COMPLETE && (
         <div className={classes.profileLayout}>
           <UserCard
-            style={{ flex: '0 0 auto' }}
+            style={{
+              flex: '0 0 auto',
+              marginBottom: '30px'
+            }}
             fetchUser={fetchUser}
             userData={user}
           />
           <UserForm
-            onSubmitComplete={() => { fetchUser(); }}
             style={{ flex: '1 1 0' }}
+            fetchUser={fetchUser}
             userData={user}
           />
         </div>

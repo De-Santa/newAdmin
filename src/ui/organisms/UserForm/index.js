@@ -1,6 +1,7 @@
 import React from 'react';
 import * as T from 'prop-types';
 import Button from '@material-ui/core/Button';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -8,27 +9,38 @@ import { Formik } from 'formik';
 import { db, firebase } from 'src/firebase.db';
 import { currencies, sexTypes } from 'constants/common';
 
-const styles = () => ({
+const styles = (theme) => ({
   form: {
     display: 'flex',
     flexDirection: 'column',
     paddingBottom: '6px'
   },
   fieldsWrapper: {
-    marginBottom: '30px'
+    display: 'grid',
+    gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)',
+    gridColumnGap: '12px',
+    marginBottom: '30px',
+    [theme.breakpoints.down('xs')]: {
+      gridTemplateColumns: 'minmax(0, 1fr)',
+    }
   },
   submit: {
-    marginTop: 'auto'
+    marginTop: 'auto',
+    alignSelf: 'flex-end',
+    [theme.breakpoints.down('sm')]: {
+      alignSelf: 'center',
+      marginBottom: '21px'
+    }
   }
 });
 
 const propTypes = {
   classes: T.object.isRequired,
-  onSubmitComplete: T.func.isRequired,
+  fetchUser: T.func.isRequired,
   userData: T.object.isRequired
 };
 
-const UserForm = ({ classes, onSubmitComplete, userData, ...props }) => {
+const UserForm = ({ classes, fetchUser, userData, ...props }) => {
   const {
     age = '',
     country = '',
@@ -49,7 +61,7 @@ const UserForm = ({ classes, onSubmitComplete, userData, ...props }) => {
           { ...values, _version: firebase.firestore.FieldValue.increment(1) }
         ).then(() => {
           setSubmitting(false);
-          onSubmitComplete();
+          fetchUser();
         });
       }}
     >
@@ -73,6 +85,12 @@ const UserForm = ({ classes, onSubmitComplete, userData, ...props }) => {
                 disabled={isSubmitting}
                 fullWidth
                 id="age"
+                InputProps={{
+                  endAdornment: <InputAdornment position="end">Лет</InputAdornment>,
+                  max: '100',
+                  min: '5',
+                  step: '1'
+                }}
                 label="Возраст"
                 placeholder="Укажите возраст"
                 margin="normal"
@@ -144,20 +162,6 @@ const UserForm = ({ classes, onSubmitComplete, userData, ...props }) => {
               />
               <TextField
                 disabled={isSubmitting}
-                fullWidth
-                id="hobbies"
-                label="Увлечения"
-                margin="normal"
-                multiline
-                placeholder="Расскажите о ваших увлечениях"
-                rowsMax="4"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                variant="outlined"
-                value={values.hobbies}
-              />
-              <TextField
-                disabled={isSubmitting}
                 id="sex"
                 name="sex"
                 select
@@ -178,12 +182,25 @@ const UserForm = ({ classes, onSubmitComplete, userData, ...props }) => {
                   </MenuItem>
                 ))}
               </TextField>
+              <TextField
+                disabled={isSubmitting}
+                fullWidth
+                id="hobbies"
+                label="Увлечения"
+                margin="normal"
+                multiline
+                placeholder="Расскажите о ваших увлечениях"
+                rowsMax="4"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                variant="outlined"
+                value={values.hobbies}
+              />
             </div>
 
             <Button
               disabled={isSubmitting}
               type="submit"
-              fullWidth
               color="primary"
               className={classes.submit}
             >

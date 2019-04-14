@@ -17,7 +17,7 @@ const MENU_LINKS = [
 const styles = () => ({
   header: {
     minHeight: '60px',
-    padding: '6px 9px',
+    padding: '6px 30px',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between'
