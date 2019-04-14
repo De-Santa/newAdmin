@@ -41,28 +41,49 @@ const AuthProvider = ({ children }) => {
   /** firebase listener on login/logout */
   useEffect(() => {
     return firebase.auth().onAuthStateChanged((firebaseUser) => {
-      if (firebaseUser) {
-        dispatch({
-          type: AUTH_IN,
-          payload: {
-            displayName: firebaseUser.displayName,
-            photoURL: firebaseUser.photoURL,
-            uid: firebaseUser.uid
-          }
-        });
-        /** save user to database on login success */
-        db.collection('users')
-          .doc(firebaseUser.uid)
-          .set({
-            displayName: firebaseUser.displayName,
-            email: firebaseUser.email,
-            emailVerified: firebaseUser.emailVerified,
-            photoURL: firebaseUser.photoURL,
-            uid: firebaseUser.uid
-          }, { merge: true });
-      } else {
+      if (!firebaseUser) {
         dispatch({ type: AUTH_OUT });
+        return;
       }
+
+      /** if user not exist save him to database on login success */
+      const userDocRef = db.collection('users').doc(firebaseUser.uid);
+      userDocRef.get()
+        .then(doc => {
+          if (!doc.exists) {
+            userDocRef.set(
+              {
+                displayName: firebaseUser.displayName,
+                email: firebaseUser.email,
+                emailVerified: firebaseUser.emailVerified,
+                photoURL: firebaseUser.photoURL,
+                uid: firebaseUser.uid
+              },
+              { merge: true }
+            ).then(() => {
+              dispatch({
+                type: AUTH_IN,
+                payload: {
+                  displayName: firebaseUser.displayName,
+                  photoURL: firebaseUser.photoURL,
+                  uid: firebaseUser.uid
+                }
+              });
+            });
+          } else {
+            dispatch({
+              type: AUTH_IN,
+              payload: {
+                displayName: firebaseUser.displayName,
+                photoURL: firebaseUser.photoURL,
+                uid: firebaseUser.uid
+              }
+            });
+          }
+        })
+        .catch((error) => {
+          dispatch({ type: AUTH_ERROR, payload: error.message });
+        });
     });
   },
   []
