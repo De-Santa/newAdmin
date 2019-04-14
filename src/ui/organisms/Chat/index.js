@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useRef, useEffect } from 'react';
 import * as T from 'prop-types';
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
@@ -37,7 +37,13 @@ const propTypes = {
 
 const Chat = ({ classes }) => {
   const [{ userData }] = useContext(AuthContext);
+  const messagesWindowRef = useRef(null);
   const messageHistory = useFirebaseCollection('chat/messages/history', 'createdAt');
+
+  useEffect(() => {
+    const messagesWindow = messagesWindowRef.current;
+    messagesWindow.scrollTop = messagesWindow.scrollHeight;
+  });
 
   return (
     <div className={classes.layout}>
@@ -48,7 +54,10 @@ const Chat = ({ classes }) => {
       >
         Чат
       </Typography>
-      <div className={classes.messages}>
+      <div
+        className={classes.messages}
+        ref={messagesWindowRef}
+      >
         {messageHistory.map(({ text, id, user }, index) => {
           const prevMessage = messageHistory[index - 1];
           const firstUserMessage = !prevMessage || user.id !== prevMessage.user.id;
