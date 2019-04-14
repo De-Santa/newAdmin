@@ -16,8 +16,8 @@ const styles = () => ({
     height: '100vh',
     padding: '6px 9px',
     display: 'grid',
-    gridTemplateColumns: '1fr 320px',
-    gridTemplateRows: 'auto 1fr',
+    gridTemplateColumns: 'minmax(0, 1fr) 320px',
+    gridTemplateRows: 'auto minmax(0, 1fr)',
     gridTemplateAreas: `
       'hdr hdr'
       'cnt cht'
@@ -35,9 +35,10 @@ const styles = () => ({
   },
   paper: {
     height: '100%',
+    overflowX: 'auto',
     padding: '6px 9px',
     color: '#333333',
-    whiteSpace: 'nowrap'
+    // whiteSpace: 'nowrap'
   }
 });
 
