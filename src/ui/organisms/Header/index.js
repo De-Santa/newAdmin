@@ -8,7 +8,11 @@ import QuitIcon from '@material-ui/icons/ExitToApp';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import { AuthContext } from 'context';
-import { useFirebaseCollection } from 'hooks';
+
+const MENU_LINKS = [
+  { label: 'Администрирование', path: '/app/admin' },
+  { label: 'Личный кабинет', path: '/app/profile' }
+];
 
 const styles = () => ({
   header: {
@@ -23,15 +27,13 @@ const styles = () => ({
   }
 });
 
-
 const propTypes = {
   classes: T.object.isRequired,
   location: T.object.isRequired
 };
 
 const Header = ({ classes, location }) => {
-  const routes = useFirebaseCollection('routes');
-  const logOut = useContext(AuthContext)[2];
+  const [, logOut] = useContext(AuthContext);
 
   return (
     <AppBar
@@ -43,9 +45,9 @@ const Header = ({ classes, location }) => {
         component="nav"
         value={location.pathname}
       >
-        { routes.map(({ path, id, label }) => (
+        { MENU_LINKS.map(({ path, label }) => (
           <Tab
-            key={id}
+            key={path}
             component={Link}
             label={label}
             to={path}
