@@ -33,7 +33,7 @@ const propTypes = {
 };
 
 const Header = ({ classes, location }) => {
-  const [, logOut] = useContext(AuthContext);
+  const [, , logOut] = useContext(AuthContext);
 
   return (
     <AppBar
